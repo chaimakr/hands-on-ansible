@@ -1,0 +1,7 @@
+- name: My first play 
+  hosts: ws1
+  tasks: 
+  - name: ping my hosts
+    ansible.builtin.ping:
+  - name: Print my message
+    command: bash -c 'echo "hello gl5" > ~/file.txt'

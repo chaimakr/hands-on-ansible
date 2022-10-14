@@ -1,0 +1,1 @@
+ws1 ansible_host=13.73.139.75 ansible_user=chaima ansible_ssh_private_key_file=./Automation_key.pem

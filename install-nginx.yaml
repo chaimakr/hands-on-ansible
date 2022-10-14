@@ -1,0 +1,41 @@
+- name: Nginx install
+  hosts: ws1
+  become: yes
+  vars:
+    www: /var/www/html
+  tasks: 
+    - name: Install Nginx
+      ansible.builtin.apt:
+       name: nginx
+       state: present
+       update_cache: true
+    - name: Create www/ directory
+      ansible.builtin.file:
+        path: "{{ www }}"
+        state: directory
+        mode: 0755
+    # - name: Start Nginx
+    #   service:
+    #    name: nginx
+    #    state: started
+    #    enabled: true
+    - name: Copy HTML
+      ansible.builtin.copy:
+       src: ./www/index.html
+       dest: "{{ www }}/index.html"
+       mode: 0755
+    - name: Copy Nginx's configuration
+      ansible.builtin.template:
+       src: ./nginx/nginx.j2
+       dest: /etc/nginx/sites-available/site.com
+       mode: 0755
+    - name: Symlink
+      ansible.builtin.file:
+       src: /etc/nginx/sites-available/site.com
+       dest: /etc/nginx/sites-enabled/default
+       state: link
+    - name: Start Nginx
+      ansible.builtin.service:
+       name: nginx
+       state: started
+       enabled: true
